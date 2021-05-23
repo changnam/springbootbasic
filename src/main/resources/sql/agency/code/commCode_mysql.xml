@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreagold.agency.mapper.mysql.CommCodeMapper">
+
+	<!-- GODOMALL 제공 API -->
+	<select id="select" resultType="CommCodeDTO">
+		SELECT  CODE_VAL,
+		        CODE_NM
+		  FROM  TB_COMM_CODE
+         WHERE  CODE_TYPE = #{codeType}
+	</select>
+	<!-- GODOMALL 제공 API -->
+	
+</mapper> 

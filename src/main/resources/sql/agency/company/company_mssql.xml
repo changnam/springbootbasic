@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreagold.agency.mapper.mssql.AgencyCompanyMapper">
+
+	<select id="selectCompanyInfo" parameterType="AgencyDTO" resultType="AgencyDTO">
+		/* 접속한 대리점 단건 조회 */
+		SELECT
+			BRANCH_ID /* 대리점 코드 */
+			, BRANCH_PW /* 대리점 비밀번호 */
+			, BRANCH_LINK /* 대리점 링크 */
+			, BRANCH_NM /* 대리점 이름 */
+			, BRANCH_AREA /* 대리점 지역 코드 (1:서울, 2:경기 - TB_COMM_CODE참조) */
+			, BRANCH_ADDR_POST /* 우편번호 */
+			, BRANCH_ADDR /* 대리점 주소 */
+			, BRANCH_ADDR_DTL /* 대리점 상세주소 */
+			, BRANCH_ADDR_CRD /* 대리점 위도경도 */
+			, BRANCH_TEL /* 대리점 전화번호 */
+			, BRANCH_FAX /* 대리점 팩스번호 */
+			, BRANCH_INFO /* 대리점 정보(오시는길) */
+			, VIEW_YN /*  */
+			, BRANCH_ORD /*  */
+			, BRANCH_GIA_YN /* GIA감정서 유무 (Y:유, N:무) */
+			, CONVERT (VARCHAR, REG_DT, 120) AS REG_DT /* 등록일자 */
+			, REG_ID /* 등록자 */
+			, CONVERT (VARCHAR, CHG_DT, 120) AS CHG_DT /* 수정일자 */
+			, CHG_DT /* 수정일자 */
+			, CHG_ID /* 변경자 */
+			, DEL_YN /* 폐쇄여부 (Y:폐쇄, N:운영중) */
+			, LINK_YN /* 대리점 홈페이지 링크유무 (Y:유, N:무) */
+			, BRANCH_NOTICE /* 고도몰계정 - 공지사항 */
+			, BRANCH_QNA /* 고도몰계정 - 문의 */
+			, BRANCH_SNO /*  */
+			, BRANCH_RNO /* 대리점 사업자등록번호 */
+			, BRANCH_EMAIL /* 대리점 이메일 */
+			, BRANCH_REP /* 대리점 대표이사 이름 */
+			, branch_disp_no /* area내 정렬순서 */
+			, BRC_MSTR /* 상호명 */
+			, META_KEYWORDS /* 메타태그 - keywords */
+			, META_DESCRIPTION /* 메타태그 - description */
+			, META_TITLE /* 메타태그 - title */
+		FROM TB_BRC_MSTR
+		<where>
+			<if test="branchId != null and branchId != ''">
+				OR BRANCH_ID = #{branchId}
+			</if>
+		</where>
+	</select>
+	
+</mapper> 

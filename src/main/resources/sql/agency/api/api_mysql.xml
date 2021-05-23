@@ -1,0 +1,714 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreagold.agency.mapper.mysql.AgencyApiMapper">
+<!-- 
+	<sql id="select-where">
+		<choose>
+			<when test='srchDt != null and srchDt != ""'>
+				<choose>
+					<when test='srchDt == "WEEK"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 7 DAY) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "MONTH"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 1 MONTH) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "1"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 1 YEAR) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "3"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 3 YEAR) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "5"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 5 YEAR) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "10"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 10 YEAR) AND DATE(NOW()) 
+					</when>
+				</choose>
+			</when>
+		</choose>
+	</sql>
+	
+	<sql id="select-where-for-exgold">
+		<choose>
+			<when test='srchDt != null and srchDt != ""'>
+				<choose>
+					<when test='srchDt == "1W"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 7 DAY) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "3W"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 21 DAY) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "5W"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 35 DAY) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "10W"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 70 DAY) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "1M"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 1 MONTH) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "3M"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 3 MONTH) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "5M"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 5 MONTH) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "10M"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 10 MONTH) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "1Y"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 1 YEAR) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "3Y"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 3 YEAR) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "5Y"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 5 YEAR) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "10Y"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 10 YEAR) AND DATE(NOW()) 
+					</when>
+				</choose>
+			</when>
+		</choose>
+	</sql>
+	
+	 -->
+	 
+	 <sql id="select-where">
+		<choose>
+			<when test='srchDt != null and srchDt != ""'>
+				<choose>
+					<when test='srchDt == "1W"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 7 DAY) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "3W"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 21 DAY) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "5W"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 35 DAY) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "10W"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 70 DAY) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "1M"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 1 MONTH) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "3M"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 3 MONTH) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "5M"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 5 MONTH) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "10M"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 10 MONTH) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "1Y"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 1 YEAR) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "3Y"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 3 YEAR) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "5Y"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 5 YEAR) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "10Y"'> 
+						AND DATE(sp_date) BETWEEN DATE(NOW() - INTERVAL 10 YEAR) AND DATE(NOW()) 
+					</when>
+				</choose>
+			</when>
+		</choose>
+	</sql>
+	
+	<sql id="select-where-exchange">
+		<choose>
+			<when test='srchDt != null and srchDt != ""'>
+				<choose>
+					<when test='srchDt == "TODAY"'> 
+					</when>
+					<when test='srchDt == "1W"'> 
+						AND DATE(er_date) BETWEEN DATE(NOW() - INTERVAL 7 DAY) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "3W"'> 
+						AND DATE(er_date) BETWEEN DATE(NOW() - INTERVAL 21 DAY) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "5W"'> 
+						AND DATE(er_date) BETWEEN DATE(NOW() - INTERVAL 35 DAY) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "10W"'> 
+						AND DATE(er_date) BETWEEN DATE(NOW() - INTERVAL 70 DAY) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "1M"'> 
+						AND DATE(er_date) BETWEEN DATE(NOW() - INTERVAL 1 MONTH) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "3M"'> 
+						AND DATE(er_date) BETWEEN DATE(NOW() - INTERVAL 3 MONTH) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "5M"'> 
+						AND DATE(er_date) BETWEEN DATE(NOW() - INTERVAL 5 MONTH) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "10M"'> 
+						AND DATE(er_date) BETWEEN DATE(NOW() - INTERVAL 10 MONTH) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "1Y"'> 
+						AND DATE(er_date) BETWEEN DATE(NOW() - INTERVAL 1 YEAR) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "3Y"'> 
+						AND DATE(er_date) BETWEEN DATE(NOW() - INTERVAL 3 YEAR) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "5Y"'> 
+						AND DATE(er_date) BETWEEN DATE(NOW() - INTERVAL 5 YEAR) AND DATE(NOW()) 
+					</when>
+					<when test='srchDt == "10Y"'> 
+						AND DATE(er_date) BETWEEN DATE(NOW() - INTERVAL 10 YEAR) AND DATE(NOW()) 
+					</when>
+				</choose>
+			</when>
+			<otherwise>
+				AND DATE(er_date) = DATE(NOW()) 
+<!-- 				AND DATE(er_date) = DATE('2020-11-19')  -->
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<sql id="select-where-limit">
+		<choose>
+		<when test='limit != null and limit != ""'>
+			LIMIT ${limit} 
+		</when>
+		</choose>
+	</sql>
+
+	<select id="selectJewelryList" resultType="MarketPriceDTO" parameterType="String">
+		SELECT mp_type,
+			   mp_date,
+			   mp_bid,
+			   mp_ask,
+			   mp_std_oprice,
+			   mp_std_iprice,
+			   mp_regdate	
+		  FROM market_price
+		 WHERE mp_type = '${type}'
+<!-- 		 	AND DATE_FORMAT(mp_regdate, "%Y-%m-%d") = DATE_FORMAT('2020-11-19', "%Y-%m-%d") -->
+		    AND DATE_FORMAT(mp_regdate, "%Y-%m-%d") =  DATE_FORMAT(now(), "%Y-%m-%d")
+	  ORDER BY mp_regdate DESC
+	</select>
+	
+<!-- 		<select id="selectJewelryListYester" resultType="MarketPriceDTO" parameterType="String"> -->
+<!-- 		SELECT  mp_type, -->
+<!-- 				mp_date, -->
+<!-- 				mp_bid, -->
+<!-- 				mp_ask, -->
+<!-- 				mp_std_oprice, -->
+<!-- 				mp_std_iprice, -->
+<!-- 				mp_regdate -->
+<!-- 		FROM market_price -->
+<!-- WHERE mp_type='${type}' AND DATE(mp_regdate) <![CDATA[<>]]> DATE(now()) -->
+<!-- 		WHERE mp_type='${type}' AND DATE(mp_regdate) <![CDATA[<>]]> DATE('2020-11-19') -->
+<!-- 		AND mp_regdate = ( SELECT MAX(mp_regdate) from market_price -->
+<!--  							WHERE mp_type='${type}' AND DATE(mp_regdate) <![CDATA[<>]]> DATE(now()))
+ 							WHERE mp_type='${type}' AND DATE(mp_regdate) <![CDATA[<>]]> DATE('2020-11-19'))
+ 	</select> -->
+	
+	<select id="selectJewelryListForExgold" resultType="MarketPriceDTO" parameterType="String">
+		SELECT mp_type,
+			   mp_date,
+			   mp_bid,
+			   mp_ask,
+			   mp_std_oprice,
+			   mp_std_iprice,
+			   mp_regdate	
+		  FROM market_price
+		 WHERE mp_type = '${type}'
+<!-- 		 	AND DATE_FORMAT(mp_regdate, "%Y-%m-%d") = DATE_FORMAT('2020-11-19', "%Y-%m-%d") -->
+		   AND DATE_FORMAT(mp_regdate, "%Y-%m-%d") =  DATE_FORMAT(now(), "%Y-%m-%d")
+	  GROUP BY DATE_FORMAT(mp_regdate, '%Y-%m-%d %H:%i')
+	  ORDER BY mp_regdate DESC
+	  <include refid="select-where-limit"/>
+	</select>
+	
+	<select id="selectJewelryListChart" resultType="MarketPriceDTO" parameterType="String">
+		SELECT mp_type,
+			   mp_date,
+			   mp_bid,
+			   mp_ask,
+			   mp_std_oprice,
+			   mp_std_iprice,
+			   mp_regdate	
+		  FROM market_price
+		 WHERE mp_type = '${type}'
+		   	AND mp_regdate > DATE_SUB((SELECT MAX(mp_regdate) FROM market_price WHERE mp_type='${type}'), INTERVAL 24 HOUR)
+	  GROUP BY DATE_FORMAT(mp_regdate, '%Y-%m-%d %H:%i')
+	  ORDER BY mp_regdate DESC
+	</select>
+	
+	<select id="selectJewelryListByDate" resultType="WholeMarketPriceDTO" parameterType="String">
+		SELECT sp_type,
+			   sp_date,
+			   sp_bid,
+			   sp_ask,
+			   sp_std_price,
+			   sp_std_gprice,
+			   sp_std_dprice,
+			   sp_regdate	
+		  FROM statsm_price
+		 WHERE sp_type = '#{type}'
+		   AND sp_regdate != '0000-00-00 00:00:00'
+		 <include refid="select-where"/>
+	  GROUP BY DATE_FORMAT(sp_regdate, '%Y-%m-%d %H:%i')
+	  ORDER BY sp_regdate DESC
+	</select>
+	
+	<select id="selectJewelryListByDateForExgold" resultType="WholeMarketPriceDTO" parameterType="String">
+		SELECT sp_type,
+			   sp_date,
+			   sp_bid,
+			   sp_ask,
+			   sp_std_price,
+			   sp_std_gprice,
+			   sp_std_dprice,
+			   sp_regdate	
+		  FROM statsm_price
+		 WHERE sp_type = '${type}'
+		   AND sp_regdate != '0000-00-00 00:00:00'
+		 <include refid="select-where" />
+	  ORDER BY sp_regdate DESC
+	  <include refid="select-where-limit" />
+	</select>
+	
+	<select id="SelectJewelryListByDateCnt" resultType="int" parameterType="String">
+		SELECT COUNT(*) + 1
+		  FROM statsm_price
+		 WHERE sp_type = '${type}'
+		   AND sp_regdate != '0000-00-00 00:00:00'
+		 <include refid="select-where"/>
+	</select>
+	
+	<select id="ReSelectJewelryListByDate" resultType="wholeMarketPriceDTO" parameterType="String">
+		SELECT sp_type,
+			   sp_date,
+			   sp_bid,
+			   sp_ask,
+			   sp_std_price,
+			   sp_std_gprice,
+			   sp_std_dprice,
+			   sp_regdate	
+		  FROM statsm_price
+		 WHERE sp_type = '${type}'
+		   AND sp_regdate != '0000-00-00 00:00:00'
+	  ORDER BY sp_regdate DESC
+	  <include refid="select-where-limit"/>
+	</select>
+	
+	<select id="selectWholeList" resultType="WholeMetalPriceDTO">
+		SELECT sb_type,
+			   sb_date,
+			   sb_gprice,
+			   sb_dprice,
+			   sb_fluctamt,
+			   sb_fluctrate,
+			   sb_regdate
+		FROM stats_basic
+		WHERE DATE(sb_regdate) = DATE((SELECT MAX(sb_regdate) from stats_basic))
+		ORDER BY FIELD(sb_type,
+						 'Au',
+						 'Ag', 
+						 'Pt', 
+						 'Pd', 
+						 'KAuCN', 
+						 'AgCN', 
+						 'AgPL', 
+						 'Ir', 
+						 'KAgCN', 
+						 'AgNO'
+					  )
+	</select>
+	
+	<select id="selectWholeListByDate" resultType="WholeMetalPriceDTO">
+		SELECT sb_type,
+			   sb_date,
+			   sb_gprice,
+			   sb_dprice,
+			   sb_fluctamt,
+			   sb_fluctrate,
+			   sb_regdate
+		FROM stats_basic
+		WHERE DATE(sb_regdate) = DATE((SELECT MAX(sb_regdate) from stats_basic WHERE sb_regdate = '${srchDt}'))
+		ORDER BY FIELD(sb_type,
+						 'Au',
+						 'Ag', 
+						 'Pt', 
+						 'Pd', 
+						 'KAuCN', 
+						 'AgCN', 
+						 'AgPL', 
+						 'Ir', 
+						 'KAgCN', 
+						 'AgNO'
+					  )
+	</select>
+	
+
+	<select id="selectExchangeRate" resultType="ExchangeRateDTO">
+		SELECT er_type,
+			   er_date,
+			   er_bid,
+			   er_ask,
+			   er_std_price,
+		       er_regdate
+		  FROM exchange_rate
+	  GROUP BY er_type
+	  ORDER BY er_type DESC
+<!-- 	  ORDER BY er_regdate DESC -->
+	</select>
+	
+	<select id="selectExchangeRateChart" parameterType="String" resultType="ExchangeRateDTO">
+		SELECT er_type,
+		   er_date,
+		   er_bid,
+		   er_ask,
+		   er_std_price,
+	       er_regdate
+	  FROM exchange_rate
+	  WHERE er_type = 'USD'
+	  GROUP BY DATE(er_date)
+	  ORDER BY er_type DESC
+<!-- 	  ORDER BY er_regdate DESC -->
+	</select>
+	
+	<select id="selectExchangeRateYesterday" parameterType="String" resultType="ExchangeRateDTO">
+	<![CDATA[
+	SELECT * FROM (
+		SELECT * 
+		  FROM exchange_rate
+		 WHERE DATE_FORMAT(er_regdate, "%Y-%m-%d") = DATE((
+			 	SELECT er_regdate 
+			 	  FROM exchange_rate
+			 	 WHERE er_type = #{type}
+			  ORDER BY er_regdate DESC
+			     LIMIT 1) - INTERVAL 1 DAY)
+		   AND er_type = #{type}) AS A WHERE er_regdate <= DATE_FORMAT(er_regdate, '%Y-%m-%d %17')
+		   ORDER BY er_regdate DESC
+		   LIMIT 1
+	]]>
+	</select>
+	
+	<select id="selectSecurities" resultType="MarketPriceDTO">
+		SELECT mp_type, 
+		       mp_date, 
+		       mp_std_iprice, 
+		       mp_regdate 
+		  FROM market_price
+		 WHERE mp_regdate = (SELECT max(mp_regdate) from market_price)
+         AND (mp_type = 'Au' OR mp_type = 'Ag')
+	  GROUP BY mp_type
+      ORDER BY mp_regdate DESC
+	</select>
+	
+	<select id="selectSecuritiesYester" resultType="WholeMarketPriceDTO">
+		SELECT n.* 
+	      FROM statsm_price n 
+	    INNER JOIN (
+	    SELECT sp_type, MAX(sp_regdate) AS sp_regdate
+	      FROM statsm_price GROUP BY sp_type
+	     ) AS max USING (sp_type, sp_regdate)
+	</select>
+	
+	<select id="selectSecuritiesByDate" resultType="WholeMarketPriceDTO">
+		SELECT sp_type, 
+		       sp_date, 
+		       sp_std_gprice, 
+		       sp_regdate 
+		  FROM statsm_price
+<!-- 		 WHERE sp_regdate = (SELECT max(sp_regdate) from statsm_price WHERE DATE(sp_regdate) <![CDATA[<>]]> DATE(now())) -->
+         AND (sp_type = 'Au' OR sp_type = 'Ag')
+	  GROUP BY sp_type
+      ORDER BY sp_regdate DESC
+	</select>
+	
+	<select id="selectSecuritiesList" resultType="WholeMarketPriceDTO">
+		SELECT sp_type, 
+		       sp_date, 
+		       sp_std_price,
+		       sp_std_gprice, 
+		       sp_regdate 
+		  FROM statsm_price
+          WHERE (sp_type = 'Au' OR sp_type = 'Ag')
+      ORDER BY sp_regdate DESC
+	</select>
+	
+	<select id="selectExchangeRateToday" resultType="Float">
+		SELECT er_bid 
+		  FROM exchange_rate
+		 WHERE er_type = 'USD'
+         ORDER BY er_regdate DESC
+         LIMIT 1;
+	</select>
+	
+	<select id="selectPriceToday" resultType="Float" parameterType="String">
+		SELECT mp_bid 
+		  FROM market_price
+		 WHERE mp_type = #{type}
+		 LIMIT 1;
+	</select>
+	
+	<select id="selectExchangeRateByDate" resultType="Float">
+		SELECT sr_bid 
+		  FROM statse_rate
+		 ORDER BY sr_date DESC
+		 LIMIT 1;
+	</select>
+	
+	<select id="selectPriceYester" resultType="Float" parameterType="String">
+		SELECT mp_bid 
+		  FROM market_price
+		 WHERE DATE_FORMAT(mp_regdate, '%Y-%m-%d') != DATE_FORMAT(NOW(), '%Y-%m-%d')
+		   AND mp_type = #{type}
+         GROUP BY DATE_FORMAT(mp_regdate, '%Y-%m-%d')
+         <!--  WHERE DATE_FORMAT(mp_regdate, '%Y-%m-%d') = DATE_FORMAT(DATE(NOW() - INTERVAL 1 DAY), '%Y-%m-%d') -->
+         ORDER BY mp_date DESC
+         LIMIT 1;
+	</select>
+	
+	
+<!-- 	<select id="selectStock" resultType="StockDTO"> -->
+<!-- 		SELECT ixic.* -->
+<!-- 			, spx.* -->
+<!-- 			, dji.* -->
+<!-- 			, wti.* -->
+<!-- 			, ksp.* -->
+<!-- 			, ksd.* -->
+<!-- 		FROM  -->
+<!-- 			(SELECT ui_price AS ixicPrice, ui_fluc AS ixicFluc, ui_fluc_ra AS ixicRate FROM us_index WHERE ui_type = 'ixic' ORDER BY updatedAt DESC LIMIT 1) ixic -->
+<!-- 			, (SELECT ui_price AS spxPrice, ui_fluc AS spxFluc, ui_fluc_ra AS spxRate FROM us_index WHERE ui_type = 'spx' ORDER BY updatedAt DESC LIMIT 1) spx -->
+<!-- 			, (SELECT ui_price AS djiPrice, ui_fluc AS djiFluc, ui_fluc_ra AS djiRate FROM us_index WHERE ui_type = 'dji' ORDER BY updatedAt DESC LIMIT 1) dji -->
+<!-- 			, (SELECT oi_price AS wtiPrice, oi_fluc AS wtiFluc, oi_fluc_ra AS wtiRate FROM oil_index WHERE oi_type = 'wti' ORDER BY updatedAt DESC LIMIT 1) wti -->
+<!-- 			, (SELECT ki_price AS kspPrice, ki_fluc AS kspFluc, ki_fluc_ra AS kspRate FROM kr_index WHERE ki_type = 'ksp' ORDER BY updatedAt DESC LIMIT 1) ksp -->
+<!-- 			, (SELECT ki_price AS ksdPrice, ki_fluc AS ksdFluc, ki_fluc_ra AS ksdRate FROM kr_index WHERE ki_type = 'ksd' ORDER BY updatedAt DESC LIMIT 1) ksd -->
+<!-- 	</select> -->
+
+	<select id="selectStock" resultType="StockDTO">
+		SELECT  n.ki_type AS type, 
+				n.ki_price AS price, 
+				n.ki_fluc AS fluc, 
+				n.ki_fluc_ra AS flucrate, 
+				n.updatedAt AS date  
+      FROM kr_index n 
+    INNER JOIN (
+    SELECT ki_type, MAX(updatedAt) AS updatedAt
+      FROM kr_index GROUP BY ki_type
+     ) AS max USING (ki_type, updatedAt)
+     union
+		SELECT  n.ui_type AS type, 
+				n.ui_price AS price, 
+				n.ui_fluc AS fluc, 
+				n.ui_fluc_ra AS flucrate, 
+				n.updatedAt AS date  
+      FROM us_index n 
+    INNER JOIN (
+    SELECT ui_type, MAX(updatedAt) AS updatedAt
+      FROM us_index GROUP BY ui_type
+     ) AS max USING (ui_type, updatedAt)
+union
+		SELECT  n.ei_type AS type, 
+				n.ei_price AS price, 
+				n.ei_fluc AS fluc, 
+				n.ei_fluc_ra AS flucrate, 
+				n.updatedAt AS date  
+      FROM eu_index n 
+    INNER JOIN (
+    SELECT ei_type, MAX(updatedAt) AS updatedAt
+      FROM eu_index GROUP BY ei_type
+     ) AS max USING (ei_type, updatedAt)
+union
+		SELECT  n.ei_type AS type, 
+				n.ei_price AS price, 
+				n.ei_fluc AS fluc, 
+				n.ei_fluc_ra AS flucrate, 
+				n.updatedAt AS date  
+      FROM asia_index n 
+    INNER JOIN (
+    SELECT ei_type, MAX(updatedAt) AS updatedAt
+      FROM asia_index GROUP BY ei_type
+     ) AS max USING (ei_type, updatedAt)
+union
+		SELECT  n.oi_type AS type, 
+				n.oi_price AS price, 
+				n.oi_fluc AS fluc, 
+				n.oi_fluc_ra AS flucrate, 
+				n.updatedAt AS date  
+      FROM oil_index n 
+    INNER JOIN (
+    SELECT oi_type, MAX(updatedAt) AS updatedAt
+      FROM oil_index GROUP BY oi_type
+     ) AS max USING (oi_type, updatedAt)
+	</select>
+	
+	<select id="selectDxyInfo" resultType="StockDTO">
+		SELECT dxy_price AS dxyPrice, dxy_fluc AS dxyFluc
+		FROM test.dxy
+		ORDER BY updatedAt DESC LIMIT 1
+	</select>
+	
+	 	
+ 	<select id="selectJewelryListCurrent" resultType="MarketPriceDTO">
+		SELECT mp_type, 
+			   mp_date, 
+			   mp_bid, 
+			   mp_ask, 
+			   mp_std_oprice, 
+			   mp_std_iprice, 
+			   mp_regdate 
+		  FROM market_price 
+	  	  WHERE mp_regdate = ( SELECT MAX(mp_regdate) from market_price)
+	  	  GROUP BY mp_type
+	  	  ORDER BY FIELD(mp_type, 'Au', 'Ag', 'Pt', 'Pd')
+	</select>
+	
+	<select id="selectJewelryListToday" resultType="WholeMarketPriceDTO">
+		SELECT sp_type,
+			   sp_date,
+			   sp_bid,
+			   sp_ask,
+			   sp_std_price,
+			   sp_std_gprice,
+			   sp_std_dprice,
+			   sp_regdate
+		FROM statsm_price
+<!-- 		WHERE sp_date = (SELECT MAX(sp_date) from statsm_price WHERE DATE(sp_regdate) <![CDATA[<>]]> DATE(now()) -->
+		WHERE sp_date = (SELECT MAX(sp_date) from statsm_price)
+		GROUP BY sp_type
+		ORDER BY FIELD(sp_type, 'Au', 'Ag', 'Pt', 'Pd')
+	</select>
+
+	<select id="selectJewelryListYester" resultType="WholeMarketPriceDTO">
+		SELECT sp_type,
+			   sp_date,
+			   sp_bid,
+			   sp_ask,
+			   sp_std_price,
+			   sp_std_gprice,
+			   sp_std_dprice,
+			   sp_regdate
+		FROM statsm_price
+		WHERE sp_date = (SELECT MAX(sp_date) from statsm_price WHERE DATE(sp_date) <![CDATA[<>]]> DATE((SELECT MAX(sp_date) from statsm_price)))
+<!-- 		WHERE sp_date = (SELECT MAX(sp_date) from statsm_price WHERE DATE(sp_regdate) <![CDATA[<>]]> DATE('2020-11-19')) -->
+		GROUP BY sp_type
+		ORDER BY FIELD(sp_type, 'Au', 'Ag', 'Pt', 'Pd')
+	</select>
+		
+	<select id="selectExchangeRateDxy" resultType="ExchangeRateDTO">
+		SELECT  a.er_type, 
+				a.er_date, 
+				a.er_bid, 
+				a.er_ask, 
+				a.er_std_price, 
+				a.er_regdate
+		FROM exchange_rate a
+			INNER JOIN (
+			    SELECT  er_type, 
+			    		MAX(er_date) er_date
+			    FROM exchange_rate
+			    GROUP BY er_type
+			) b ON a.er_type = b.er_type AND a.er_date = b.er_date
+		GROUP BY er_type
+		UNION
+			SELECT dxy_type, dxy_date, dxy_fluc, dxy_price, dxy_fluc_ra, updatedAt
+	    	FROM dxy
+	    	WHERE updatedAt = (SELECT max(updatedAt) FROM dxy)
+	    ORDER BY FIELD(er_type, 'dxy', 'USD', 'JYP', 'EUR', 'CNY')
+	</select>
+	
+	<select id="selectExchangeRateDxyYester" resultType="ExchangeRateDTO">  
+	    SELECT  a.sr_type as er_type, 
+				a.sr_date as er_date, 
+				a.sr_bid as er_bid, 
+				a.sr_ask as er_ask, 
+				a.sr_std_price as er_std_price, 
+				a.sr_regdate as er_regdate
+		FROM statse_rate a
+			INNER JOIN (
+			    SELECT  sr_type as er_type, 
+			    		MAX(sr_date) er_date
+			    FROM statse_rate
+			    WHERE DATE(sr_date) <![CDATA[<>]]> DATE(now())
+<!-- 			    WHERE DATE(sr_date) <![CDATA[<>]]> DATE('2020-11-19') -->
+			    GROUP BY er_type
+			) b ON a.sr_type = b.er_type AND a.sr_date = b.er_date
+		GROUP BY er_type
+		UNION
+			SELECT dxy_type, dxy_date, dxy_fluc, dxy_price, dxy_fluc_ra, updatedAt
+	    	FROM dxy
+	    	WHERE dxy_date = (SELECT max(dxy_date) FROM dxy WHERE DATE(dxy_date) <![CDATA[<>]]> DATE((SELECT max(dxy_date) FROM dxy)))
+<!-- 	    	WHERE dxy_date = (SELECT max(dxy_date) FROM dxy WHERE DATE(dxy_date) <![CDATA[<>]]> DATE('2020-11-19')) -->
+	    ORDER BY FIELD(er_type, 'dxy', 'USD', 'JYP', 'EUR', 'CNY')
+	</select>
+	
+	<select id="selectPreciousMetal" resultType="PreciousMetalDTO">
+		SELECT  pm_type,
+				pm_date,
+				pm_std_price,
+				pm_sign,
+				pm_fluct_price,
+				pm_regdate
+		FROM precious_metals
+		GROUP BY pm_type
+		ORDER BY pm_type DESC
+	</select>
+	
+	<select id="selectLondonFix" resultType="LondonFixDTO">
+		SELECT  a.lf_type, 
+				a.lf_date, 
+				a.lf_am, 
+				a.lf_pm, 
+				a.lf_fluct_bam, 
+				a.lf_fluct_bpm, 
+				a.lf_fluct_am,
+				a.lf_bpm, 
+				a.lf_regdate  
+		FROM london_fixing a
+		INNER JOIN (
+			SELECT lf_type, MAX(lf_regdate) lf_regdate
+	        FROM london_fixing
+	        GROUP BY lf_type
+		) b
+	    ON a.lf_type = b.lf_type AND a.lf_regdate = b.lf_regdate
+	    GROUP BY lf_type
+	</select>
+	
+	<select id="selectFirstNotify" resultType="LondonFixDTO">
+		SELECT  er_date,
+				er_first_ask,
+				er_fluctamt,
+				er_fluctrate,
+				er_regdate 
+		FROM kb_first_er
+		WHERE er_date = (SELECT MAX(er_date) from kb_first_er)
+	</select>
+	
+	<select id="selectPurchasePrice" resultType="PurchasePriceDTO">
+		SELECT  p_date,
+				p_1_price, 
+				p_2_price, 
+				p_3_price, 
+				p_4_price,
+				p_5_price,
+				p_regdate
+		FROM purchase_price 
+		WHERE p_gubun='U' AND p_regdate = (SELECT MAX(p_regdate) FROM purchase_price WHERE p_gubun='U')
+	</select>
+	
+	<select id="selectPurchasePriceYester" resultType="PurchasePriceDTO">
+		SELECT  p_date,
+				p_1_price, 
+				p_2_price, 
+				p_3_price, 
+				p_4_price,
+				p_5_price,
+				p_regdate
+		FROM m3.purchase_price
+		WHERE p_gubun='U' AND p_regdate = (SELECT MAX(p_regdate) FROM purchase_price WHERE p_gubun='U' AND p_regdate <![CDATA[<>]]>(SELECT MAX(p_regdate) FROM purchase_price WHERE p_gubun='U'))
+	</select>
+	
+</mapper>

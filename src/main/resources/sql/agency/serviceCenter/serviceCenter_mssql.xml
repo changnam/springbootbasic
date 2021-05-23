@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreagold.agency.mapper.mssql.AgencyScMapper">
+
+	<select id="selectFaqList" parameterType="AgentFaqDTO" resultType="AgentFaqDTO">
+		/* 접속한 대리점 FAQ 목록 조회 */
+		SELECT * FROM (
+			SELECT
+				ROW_NUMBER () OVER(ORDER BY BOARD_IDX DESC) AS ROW_NUM
+				, BOARD_IDX
+				, AFLAG /* 대리점 코드 */
+				, TITLE /* 제목 */
+				, CONTENT /* 내용 */
+			FROM AGENT_FAQ
+			<where>
+				<if test="aflag != null and aflag != ''">
+					AND AFLAG = #{aflag}
+				</if>
+				<if test="searchWord != null and searchWord != ''">
+					<if test="searchCondition == 'title'">
+						AND CONVERT(nvarchar(4000), TITLE) LIKE '%' + #{searchWord} + '%'
+					</if>
+					<if test="searchCondition == 'contents'">
+						AND CONVERT(nvarchar(4000), CONTENT) LIKE '%' + #{searchWord} + '%'
+					</if>
+				</if>
+			</where>
+		) AGENT_FAQ
+		WHERE AGENT_FAQ.ROW_NUM BETWEEN #{startCount} AND #{endCount}
+	</select>
+	
+	<select id="totalFaqCount" parameterType="AgentFaqDTO" resultType="int">
+		/* 접속한 대리점 FAQ 목록 갯수 */
+		SELECT COUNT(BOARD_IDX)
+		FROM AGENT_FAQ
+		<where>
+			<if test="aflag != null and aflag != ''">
+				AND AFLAG = #{aflag}
+			</if>
+			<if test="searchWord != null and searchWord != ''">
+				<if test="searchCondition == 'title'">
+					AND CONVERT(nvarchar(4000), TITLE) LIKE '%' + #{searchWord} + '%'
+				</if>
+				<if test="searchCondition == 'contents'">
+					AND CONVERT(nvarchar(4000), CONTENT) LIKE '%' + #{searchWord} + '%'
+				</if>
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectQnaList" parameterType="AgentQnaDTO" resultType="AgentQnaDTO">
+		/* 접속한 대리점 qna 목록 조회 */
+		SELECT * FROM (
+			SELECT
+				ROW_NUMBER () OVER(ORDER BY WRITEDAY DESC) AS ROW_NUM
+				, BOARD_IDX
+				, AFLAG /* 대리점 코드 */
+				, NAME /* 이름 */
+				, EMAIL /* 이메일 */
+				, TITLE /* 제목 */
+				, CONTENT /* 내용 */
+				, NUM /**/
+				, READNUM /* 조회수 */
+				, CONVERT (VARCHAR(10), WRITEDAY, 120) AS WRITEDAY /* 작성일자 */
+				, REF /**/
+				, RE_LEVEL /**/
+				, RE_STEP /**/
+				, PWD /* 비밀번호 */
+				, LOCK /* 잠금여부 (on:잠금) */
+				, GUBUN /* 종류 (0:) */
+				, IPADR /* ip주소 */
+				, COMMENT
+				, FILENAME /* 파일이름 */
+				, FILESIZE /* 파일크기 */
+				, PART_N
+				, PARENT_BOARD_IDX /* 1:1문의 답변에 대한 부모 board_idx */
+			FROM AGENT_QNA
+			<where>
+				<if test="aflag != null and aflag != ''">
+					AND AFLAG = #{aflag}
+				</if>
+				<if test="searchWord != null and searchWord != ''">
+					<if test="searchCondition == 'title'">
+						AND CONVERT(nvarchar(4000), TITLE) LIKE '%' + #{searchWord} + '%'
+					</if>
+					<if test="searchCondition == 'contents'">
+						AND CONVERT(nvarchar(4000), CONTENT) LIKE '%' + #{searchWord} + '%'
+					</if>
+				</if>
+				AND PARENT_BOARD_IDX IS NULL
+			</where>
+		) AGENT_QNA
+		WHERE AGENT_QNA.ROW_NUM BETWEEN #{startCount} AND #{endCount}
+	</select>
+	
+	<select id="totalQnaCount" parameterType="AgentQnaDTO" resultType="int">
+		/* 접속한 대리점 qna 목록 갯수 */
+		SELECT COUNT(BOARD_IDX)
+		FROM AGENT_QNA
+		<where>
+			PARENT_BOARD_IDX IS NULL
+			<if test="aflag != null and aflag != ''">
+				AND AFLAG = #{aflag}
+			</if>
+		</where>
+	</select>
+		
+	<select id="selectQna" parameterType="AgentQnaDTO" resultType="hashmap">
+		/* 1:1문의 상세 조회 */
+		SELECT
+			BOARD_IDX
+			, AFLAG /* 대리점 코드 */
+			, NAME /* 대리점 이름 */
+			, EMAIL /* 이메일 */
+			, TITLE /* 제목 */
+			, CONTENT /* 내용 */
+			, NUM /**/
+			, READNUM /* 조회수 */
+			, CONVERT (VARCHAR(10), WRITEDAY, 120) AS WRITEDAY /* 작성일자 */
+			, REF /**/
+			, RE_LEVEL /**/
+			, RE_STEP /**/
+			, PWD /* 비밀번호 */
+			, LOCK /* 잠금여부 (on:잠금) */
+			, GUBUN /* 종류 (0:) */
+			, IPADR /* ip주소 */
+			, COMMENT
+			, FILENAME /* 파일이름 */
+			, FILESIZE /* 파일크기 */
+			, PART_N
+			, PARENT_BOARD_IDX /* 1:1문의 답변에 대한 부모 board_idx */
+			, (SELECT BOARD_IDX FROM AGENT_QNA WHERE PARENT_BOARD_IDX = #{boardIdx}) AS RE_BOARD_IDX /* 해당 문의에 대한 답변의 일련번호 */
+			, (SELECT CONTENT FROM AGENT_QNA WHERE PARENT_BOARD_IDX = #{boardIdx}) AS RE_CONTENT /* 해당 문의에 대한 답변 */
+		FROM AGENT_QNA
+		WHERE BOARD_IDX = #{boardIdx}
+	</select>
+	
+	<select id="selectNoticeList" parameterType="AgentNoticeDTO" resultType="AgentNoticeDTO">
+		/* 접속한 대리점 공지사항 목록 조회 */
+		SELECT * FROM (
+			SELECT
+				ROW_NUMBER () OVER(ORDER BY WRITEDAY DESC) AS ROW_NUM
+				, BOARD_IDX
+				, AFLAG /* 대리점 코드 */
+				, GUBUN /* 공지종류 (공지사항, 필수공지) */
+				, TITLE /* 제목 */
+				, CONTENT /* 내용 */
+				, CONVERT (VARCHAR(10), WRITEDAY, 120) AS WRITEDAY /* 작성일자 */
+				, NAME /* 대리점 이름 */
+				, READNUM /* 조회수 */
+				, NUM /**/
+				, COMMENT /**/
+				, POPUP /**/
+			FROM AGENT_NOTICE
+			<where>
+				<if test="aflag != null and aflag != ''">
+					AND AFLAG = #{aflag}
+				</if>
+				<if test="searchWord != null and searchWord != ''">
+					<if test="searchCondition == 'title'">
+						AND CONVERT(nvarchar(4000), TITLE) LIKE '%' + #{searchWord} + '%'
+					</if>
+					<if test="searchCondition == 'contents'">
+						AND CONVERT(nvarchar(4000), CONTENT) LIKE '%' + #{searchWord} + '%'
+					</if>
+					<if test="searchCondition == 'writerNm'">
+						AND CONVERT(nvarchar(4000), NAME) LIKE '%' + #{searchWord} + '%'
+					</if>
+				</if>
+			</where>
+		) AGENT_NOTICE
+		WHERE  AGENT_NOTICE.ROW_NUM BETWEEN #{startCount} AND #{endCount} 
+	</select>
+	
+	<select id="totalNoticeCount" parameterType="AgentNoticeDTO" resultType="int">
+		/* 접속한 대리점 공지사항 목록 갯수 */
+		SELECT COUNT(BOARD_IDX)
+		FROM AGENT_NOTICE
+		<where>
+			<if test="aflag != null and aflag != ''">
+				AND AFLAG = #{aflag}
+			</if>
+			<if test="searchWord != null and searchWord != ''">
+				<if test="searchCondition == 'title'">
+					AND CONVERT(nvarchar(4000), TITLE) LIKE '%' + #{searchWord} + '%'
+				</if>
+				<if test="searchCondition == 'contents'">
+					AND CONVERT(nvarchar(4000), CONTENT) LIKE '%' + #{searchWord} + '%'
+				</if>
+				<if test="searchCondition == 'writerNm'">
+					AND CONVERT(nvarchar(4000), NAME) LIKE '%' + #{searchWord} + '%'
+				</if>
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectNotice" parameterType="AgentNoticeDTO" resultType="hashmap">
+		/* 공지사항 상세 조회 */
+		SELECT
+			BOARD_IDX
+			, AFLAG /* 대리점 코드 */
+			, GUBUN /* 공지종류 (공지사항, 필수공지) */
+			, TITLE /* 제목 */
+			, CONTENT /* 내용 */
+			, CONVERT (VARCHAR(10), WRITEDAY, 120) AS WRITEDAY /* 작성일자 */
+			, NAME /* 대리점 이름 */
+			, READNUM /* 조회수 */
+			, NUM /**/
+			, COMMENT /**/
+			, POPUP /**/
+		FROM AGENT_NOTICE
+		WHERE BOARD_IDX = #{boardIdx}
+	</select>
+	
+	<select id="selectFaq" parameterType="AgentFaqDTO" resultType="hashmap">
+		/* FAQ 상세 조회 */
+		SELECT
+			BOARD_IDX
+			, AFLAG /* 대리점 코드 */
+			, TITLE /* 제목 */
+			, CONTENT /* 내용 */
+		FROM AGENT_FAQ
+		WHERE BOARD_IDX = #{boardIdx}
+	</select>
+	
+	<insert id="insertFaq" parameterType="AgentFaqDTO">
+		/* FAQ 등록 */
+		INSERT INTO AGENT_FAQ(
+			AFLAG, TITLE, CONTENT
+		) VALUES (
+			#{aflag}, #{title}, #{content}
+		) 
+	</insert>
+
+	<insert id="insertQna" parameterType="AgentQnaDTO">
+		/* 1:1문의 답변 등록 */
+		INSERT INTO AGENT_QNA(
+			AFLAG, NAME, EMAIL, TITLE, CONTENT, NUM, READNUM, WRITEDAY, REF, RE_LEVEL, RE_STEP, PWD, LOCK, GUBUN, IPADR, COMMENT, FILENAME, FILESIZE, PART_N, PARENT_BOARD_IDX
+		) VALUES (
+			#{aflag}, #{name}, #{email}, #{title}, #{content}, #{num}, #{readNum}, getdate(), #{ref}, #{reLevel}, #{reStep}, #{pwd}, #{lock}, #{gubun}, #{ipadr}, #{comment}, #{fileName}, #{fileSize}, #{partn}, #{parentBoardIdx}
+		) 
+	</insert>
+	
+	<insert id="insertNotice" parameterType="AgentNoticeDTO">
+		/* 공지사항 등록 */
+		INSERT INTO AGENT_NOTICE(
+			AFLAG, GUBUN, TITLE, CONTENT, WRITEDAY, NAME, READNUM, NUM, COMMENT, POPUP
+		) VALUES (
+			#{aflag}, #{gubun}, #{title}, #{content}, getdate(), #{name}, #{readNum}, #{num}, #{comment}, #{popup}
+		)
+	</insert>
+	
+	<update id="updateFaq" parameterType="AgentFaqDTO">
+		/* FAQ 수정 */
+		UPDATE AGENT_FAQ
+		<set>
+			<if test="title != null and title != ''">
+				TITLE = #{title}
+			</if>
+			<if test="content != null and content != ''">
+				, CONTENT = #{content}
+			</if>
+		</set>
+		WHERE BOARD_IDX = #{boardIdx}
+	</update>
+	
+	<update id="updateQna" parameterType="AgentQnaDTO">
+		/* 1:1 문의 답변 수정 */
+		UPDATE AGENT_QNA
+		<set>
+			<if test="aflag != null and aflag != ''">
+				AFLAG = #{aflag}
+			</if>
+			<if test="name != null and name != ''">
+				, NAME = #{name}
+			</if>
+			<if test="email != null and email != ''">
+				, EMAIL = #{email}
+			</if>
+			<if test="title != null and title != ''">
+				, TITLE = #{title}
+			</if>
+			<if test="content != null and content != ''">
+				, CONTENT = #{content}
+			</if>
+			<if test="num != null and num != ''">
+				, NUM = #{num}
+			</if>
+			<if test="readNum != null and readNum != ''">
+				, READNUM = #{readNum}
+			</if>
+			<if test="ref != null and ref != ''">
+				, REF = #{ref}
+			</if>
+			<if test="reLevel != null and reLevel != ''">
+				, RE_LEVEL = #{reLevel}
+			</if>
+			<if test="reStep != null and reStep != ''">
+				, RE_STEP = #{reStep}
+			</if>
+			<if test="pwd != null and pwd !=''">
+				, PWD = #{pwd}
+			</if>
+			<if test="lock != null and lock != ''">
+				, LOCK = #{lock}
+			</if>
+			<if test="gubun != null and gubun != ''">
+				, GUBUN = #{gubun}
+			</if>
+			<if test="ipadr != null and ipadr != ''">
+				, IPADR = #{ipadr}
+			</if>
+			<if test="comment != null and comment != ''">
+				, COMMENT = #{comment}
+			</if>
+			<if test="fileName != null and fileName != ''">
+				, FILENAME = #{fileName}
+			</if>
+			<if test="fileSize != null and fileSize != ''">
+				, FILESIZE = #{fileSize}
+			</if>
+			<if test="partn != null and partn != ''">
+				, PART_N = #{partn}
+			</if>
+		</set>
+		WHERE BOARD_IDX = #{boardIdx}
+	</update>
+	
+	<update id="updateNotice" parameterType="AgentNoticeDTO">
+		/* 공지사항 수정 */
+		UPDATE AGENT_NOTICE
+		<set>
+			<if test="aflag != null and aflag != ''">
+				AFLAG = #{aflag}
+			</if>
+			<if test="gubun != null and gubun != ''">
+				, GUBUN = #{gubun}
+			</if>
+			<if test="title != null and title != ''">
+				, TITLE = #{title}
+			</if>
+			<if test="content != null and content != ''">
+				, CONTENT = #{content}
+			</if>
+			<if test="name != null and name != ''">
+				, NAME = #{name}
+			</if>
+			<if test="readNum != null and readNum != ''">
+				, READNUM = #{readNum}
+			</if>
+			<if test="num != null and num != ''">
+				, NUM = #{num}
+			</if>
+			<if test="comment != null and comment != ''">
+				, COMMENT = #{comment}
+			</if>
+			<if test="popup != null and popup != ''">
+				, POPUP = #{popup}
+			</if>
+		</set>
+		WHERE BOARD_IDX = #{boardIdx}
+	</update>
+	
+	<update id="updateQnaReadNum">
+		/* 1:1문의 조회수 증가 */
+		UPDATE AGENT_QNA
+		SET
+			READNUM = READNUM + 1
+		WHERE BOARD_IDX = #{boardIdx}
+	</update>
+	
+	<update id="updateNoticeReadNum">
+		/* 공지사항 조회수 증가 */
+		UPDATE AGENT_NOTICE
+		SET
+			READNUM = READNUM + 1
+		WHERE BOARD_IDX = #{boardIdx}
+	</update>
+	
+	<delete id="deleteFaq">
+		DELETE FROM AGENT_FAQ WHERE BOARD_IDX = #{boardIdx}
+	</delete>
+	
+	<delete id="deleteQna">
+		DELETE FROM AGENT_QNA WHERE BOARD_IDX = #{boardIdx}
+	</delete>
+	
+	<delete id="deleteNotice">
+		DELETE FROM AGENT_NOTICE WHERE BOARD_IDX = #{boardIdx}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreagold.agency.mapper.mysql.DiamondMapper">
+
+	<select id="selectDiamondPrice" resultType="DiamondPriceDTO">
+		SELECT  d_no, 
+				d_level, 
+				d_f1, 
+				d_g1, 
+				d_g2,
+				d_g3, 
+				d_g4, 
+				d_g5 
+		FROM diamond
+	</select>
+	
+	<update id="update" parameterType="DiamondPriceDTO">
+		UPDATE TB_DIA_CHART_MSTR
+		   SET VAL = #{val},
+		   	   WEIGHT = #{weight},
+		   	   COLOR = #{color},
+		       TRANSPARENCY = #{transparency},
+		       GRADE = #{grade},
+		       SALES_PRICE = #{salesPrice},
+		       VIEW_YN = #{viewYn},
+		       SOLD_YN = #{soldYn},
+		       CHG_DT = GETDATE(),
+		       CHG_ID = #{chgId}
+		 WHERE SEQ = #{seq}
+	</update>
+	
+	<!-- GODOMALL 제공 API -->
+	<select id="selectDiamondApi" resultType="DiamondPriceDTO" parameterType="String">
+		SELECT     SEQ,
+			       VAL,
+			       WEIGHT,
+			       COLOR,
+			       TRANSPARENCY,
+			       GRADE,
+			       SALES_PRICE,
+			       VIEW_YN,
+			       SOLD_YN,
+			       ORD
+		  FROM     TB_DIA_CHART_MSTR
+ 		 WHERE     VIEW_YN = #{viewYn}
+	</select>
+	<!-- GODOMALL 제공 API -->
+	
+</mapper>

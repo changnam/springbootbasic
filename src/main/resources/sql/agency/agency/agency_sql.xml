@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreagold.agency.mapper.mssql.AgencyMapper">
+
+	<!-- GODOMALL 제공 API -->
+	<select id="selectAgencylist" resultType="AgencyDTO">
+		SELECT  BOARD_IDX,
+				BRANCH_ID,
+				BRANCH_PW,
+				BRANCH_LINK,
+				BRANCH_NM,
+				BRANCH_AREA,
+				BRANCH_ADDR,
+				BRANCH_ADDR_DTL,
+				BRANCH_ADDR_POST,
+				BRANCH_ADDR_CRD,
+				BRANCH_TEL,
+				BRANCH_FAX,
+				BRANCH_INFO,
+				VIEW_YN,
+				LINK_YN,
+				BRANCH_ORD,
+				BRANCH_GIA_YN,
+				REG_DT,
+				REG_ID,
+				CHG_DT,
+				CHG_ID,
+				BRANCH_NOTICE,
+				BRANCH_QNA,
+				BRANCH_SNO
+		  FROM  TB_BRC_MSTR
+		 WHERE  DEL_YN = 'N'
+      ORDER BY  BOARD_IDX, BRANCH_ORD ASC
+	</select>
+	
+	<select id="selectAgencyByIdx" resultType="AgencyDTO" parameterType="AgencyDTO">
+		SELECT  BOARD_IDX,
+				BRANCH_ID,
+				BRANCH_PW,
+				BRANCH_LINK,
+				BRANCH_NM,
+				BRANCH_AREA,
+				BRANCH_ADDR,
+				BRANCH_ADDR_DTL,
+				BRANCH_ADDR_POST,
+				BRANCH_ADDR_CRD,
+				BRANCH_TEL,
+				BRANCH_FAX,
+				BRANCH_INFO,
+				VIEW_YN,
+				BRANCH_ORD,
+				BRANCH_GIA_YN,
+				LINK_YN,
+				REG_DT,
+				REG_ID,
+				CHG_DT,
+				CHG_ID,
+				BRANCH_NOTICE,
+				BRANCH_QNA,
+				BRANCH_SNO
+		  FROM  TB_BRC_MSTR
+		 WHERE  BOARD_IDX = #{boardIdx}
+		   AND  DEL_YN = 'N'
+	</select>
+	
+	<select id="selectAgencyById" resultType="AgencyDTO" parameterType="AgencyDTO">
+		SELECT  BOARD_IDX,
+				BRANCH_ID,
+				BRANCH_PW,
+				BRANCH_LINK,
+				BRANCH_NM,
+				BRANCH_AREA,
+				BRANCH_ADDR,
+				BRANCH_ADDR_DTL,
+				BRANCH_ADDR_POST,
+				BRANCH_ADDR_CRD,
+				BRANCH_TEL,
+				BRANCH_FAX,
+				BRANCH_INFO,
+				VIEW_YN,
+				BRANCH_ORD,
+				BRANCH_GIA_YN,
+				LINK_YN,
+				REG_DT,
+				REG_ID,
+				CHG_DT,
+				CHG_ID,
+				BRANCH_NOTICE,
+				BRANCH_QNA,
+				BRANCH_SNO
+		  FROM  TB_BRC_MSTR
+		 WHERE  BRANCH_ID = #{branchId}
+		   AND  DEL_YN = 'N'
+	</select>
+	
+	
+	<select id="selectAgencyByNm" resultType="AgencyDTO" parameterType="AgencyDTO">
+		SELECT  BOARD_IDX,
+				BRANCH_ID,
+				BRANCH_PW,
+				BRANCH_LINK,
+				BRANCH_NM,
+				BRANCH_AREA,
+				BRANCH_ADDR,
+				BRANCH_ADDR_DTL,
+				BRANCH_ADDR_POST,
+				BRANCH_ADDR_CRD,
+				BRANCH_TEL,
+				BRANCH_FAX,
+				BRANCH_INFO,
+				VIEW_YN,
+				BRANCH_ORD,
+				BRANCH_GIA_YN,
+				LINK_YN,
+				REG_DT,
+				REG_ID,
+				CHG_DT,
+				CHG_ID,
+				BRANCH_NOTICE,
+				BRANCH_QNA,
+				BRANCH_SNO
+		  FROM  TB_BRC_MSTR
+		 WHERE  BRANCH_NM = #{BranchNm}
+		   AND  DEL_YN = 'N'
+	</select>
+	
+	
+	<!-- GODOMALL 제공 API -->
+	 
+	<select id="chkdup" parameterType="AgencyDTO" resultType="int">
+		SELECT COUNT(*)
+		  FROM TB_BRC_MSTR
+		 WHERE BRANCH_ID = #{branchId}
+		   AND DEL_YN = 'N'
+	</select>
+	
+	<select id="selectBannerlist" resultType="BannerDTO">
+		/* 배너 목록 조회 */
+		SELECT
+			BANNER_SEQ /* 배너 일련번호 */
+			, ORDER_NO /* 배너 정렬 순서 */
+			, TITLE /* 배너 제목 */
+			, CONTENT /* 배너 내용 */
+			, FILE_PATH /* 저장된 파일 위치 */
+			, DISPLAY_TYPE /* 노출기간종류 */
+			, STATUS_CD /* 노출 상태 */
+			, DISPLAY_ST_DT /* 노출시작일 */
+			, DISPLAY_END_DT /* 노출종료일 */
+			, REG_ID /* 등록자 */
+			, REG_DT
+			, CONVERT (VARCHAR(10), REG_DT, 120) AS REG_DT2 /* 등록일 */
+			, CHG_ID /* 수정자 */
+			, CONVERT (VARCHAR(10), CHG_DT, 120) AS CHG_DT /* 수정일 */
+		FROM TB_BANNER
+		<where>
+			<if test="displayType == 'B'">
+				<![CDATA[
+					AND DISPLAY_ST_DT < GETDATE()
+					AND DISPLAY_END_DT > GETDATE()
+				]]>
+			</if>
+			AND STATUS_CD = 'Y'
+			AND TYPE_CD = #{typeCd}
+		</where>
+		ORDER BY ORDER_NO ASC, REG_DT DESC
+	</select>
+	
+	<select id="totalBannerCount" parameterType="BannerDTO" resultType="int">
+		/* 배너 목록 개수 조회 */
+		SELECT COUNT(BANNER_SEQ)
+		FROM TB_BANNER
+		<where>
+			<if test="displayType == 'B'">
+				<![CDATA[
+					AND DISPLAY_ST_DT < GETDATE()
+					AND DISPLAY_END_DT > GETDATE()
+				]]>
+			</if>
+			AND STATUS_CD = 'Y'
+			AND TYPE_CD = #{typeCd}
+		</where>
+	</select>
+	 
+	<insert id="insert" parameterType="AgencyDTO">
+		INSERT INTO TB_BRC_MSTR(BRANCH_ID,
+								BRANCH_PW,
+								BRANCH_LINK,
+								BRANCH_NM,
+								BRANCH_AREA,
+								BRANCH_ADDR,
+								BRANCH_ADDR_DTL,
+								BRANCH_ADDR_POST,
+								BRANCH_ADDR_CRD,
+								BRANCH_TEL,
+								BRANCH_FAX,
+								BRANCH_INFO,
+								VIEW_YN,
+								BRANCH_ORD,
+								BRANCH_GIA_YN,
+								BRANCH_NOTICE,
+								BRANCH_QNA,
+								BRANCH_SNO,
+								REG_DT,
+								REG_ID,
+								CHG_DT,
+								CHG_ID,
+								DEL_YN,
+								LINK_YN)
+						VALUES ( #{branchId},
+								#{branchPw},
+								#{branchLink},
+								#{branchNm},
+								#{branchArea},
+								#{branchAddr},
+								#{branchAddrDtl},
+								#{branchAddrPost},
+								#{branchAddrCrd},
+								#{branchTel},
+								#{branchFax},
+								#{branchInfo},
+								#{viewYn},
+								#{branchOrd},
+								#{branchGiaYn},
+								#{branchNotice},
+								#{branchQna},
+								#{branchSno},
+								GETDATE(),
+								#{regId},
+								GETDATE(),
+								#{chgId}, 
+								'N',
+								#{linkYn}
+						       )
+	</insert>
+	
+	<update id="update" parameterType="AgencyDTO">
+		UPDATE  TB_BRC_MSTR 
+		   SET  BRANCH_PW = #{branchPw},
+				BRANCH_LINK = #{branchLink},
+				BRANCH_NM = #{branchNm},
+				BRANCH_AREA = #{branchArea},
+				BRANCH_ADDR = #{branchAddr},
+				BRANCH_ADDR_DTL = #{branchAddrDtl},
+				BRANCH_ADDR_POST = #{branchAddrPost},
+				BRANCH_ADDR_CRD = #{branchAddrCrd},
+				BRANCH_TEL = #{branchTel},
+				BRANCH_FAX = #{branchFax},
+				BRANCH_INFO = #{branchInfo},
+				VIEW_YN = #{viewYn},
+				BRANCH_ORD = #{branchOrd},
+				BRANCH_GIA_YN = #{branchGiaYn},
+				BRANCH_NOTICE = #{branchNotice},
+				BRANCH_QNA = #{branchQna},
+				BRANCH_SNO = #{branchSno},
+				CHG_DT = GETDATE(),
+				CHG_ID = #{chgId},
+				LINK_YN = #{linkYn}
+	     WHERE  BOARD_IDX = #{boardIdx}
+	</update>
+	
+	<update id="delete" parameterType="AgencyDTO">
+		UPDATE TB_BRC_MSTR 
+		   SET CHG_DT = GETDATE()
+		      ,CHG_ID = #{chgId}
+		      ,DEL_YN = 'Y'
+		 WHERE BOARD_IDX = #{boardIdx}
+	</update>
+	
+</mapper> 

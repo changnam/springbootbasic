@@ -68,7 +68,7 @@ public class MysqlDataSourceConfig {
 		return dataSourceInitializer;
 	}
 	
-	@Bean(name = "mysqlTranactionManager")
+	@Bean(name = "mysqlTransactionManager")
 	@Primary
     public PlatformTransactionManager mysqlTransactionManager()
     {

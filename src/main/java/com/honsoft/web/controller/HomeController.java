@@ -14,12 +14,12 @@ public class HomeController
     @Autowired
     private UserOrdersService userOrdersService;
  
-    @RequestMapping(value = {"/", "/app/users"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/app", "/app/users"}, method = RequestMethod.GET)
     public String getUsers(Model model)
     {
         model.addAttribute("users", userOrdersService.getUsers());
         model.addAttribute("orders", userOrdersService.getOrders());
   
-        return "users";
+        return "thymeleaf/users";
     }
 }

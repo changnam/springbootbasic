@@ -28,6 +28,7 @@ import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -109,5 +110,14 @@ public class MysqlDataSourceConfig {
         factory.setJpaProperties(jpaProperties);
      
         return factory;
+    }
+	
+	 
+    @Bean
+    public OpenEntityManagerInViewFilter mysqlOpenEntityManagerInViewFilter()
+    {
+        OpenEntityManagerInViewFilter osivFilter = new OpenEntityManagerInViewFilter();
+        osivFilter.setEntityManagerFactoryBeanName("mysqlEntityManagerFactory");
+        return osivFilter;
     }
 }

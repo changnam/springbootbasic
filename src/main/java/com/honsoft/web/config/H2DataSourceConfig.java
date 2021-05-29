@@ -29,6 +29,7 @@ import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -36,7 +37,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @MapperScan(value = { "com.honsoft.web.mapper.h2" }, sqlSessionFactoryRef = "h2SqlSessionFactory")
-@EnableJpaRepositories(basePackages = "com.honsoft.web.repository.h2", entityManagerFactoryRef = "h2EntitiyManagerFactory", transactionManagerRef = "h2TransactionManager")
+@EnableJpaRepositories(basePackages = "com.honsoft.web.repository.h2", entityManagerFactoryRef = "h2EntityManagerFactory", transactionManagerRef = "h2TransactionManager")
 public class H2DataSourceConfig {
 	//private static final String DEFAULT_NAMING_STRATEGY = "org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy";
 	
@@ -69,7 +70,7 @@ public class H2DataSourceConfig {
 
 	@Bean(name = "h2TransactionManager")
 	@Primary
-    public PlatformTransactionManager h2TransactionManager(@Qualifier("h2EntitiyManagerFactory")EntityManagerFactory entityManagerFactory)
+    public PlatformTransactionManager h2TransactionManager(@Qualifier("h2EntityManagerFactory")EntityManagerFactory entityManagerFactory)
     {
         return new JpaTransactionManager(entityManagerFactory);
     }
@@ -97,7 +98,7 @@ public class H2DataSourceConfig {
 	// jpa
 	@PersistenceContext(unitName = "h2Unit")
 	@Primary
-	@Bean(name = "h2EntitiyManagerFactory")
+	@Bean(name = "h2EntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean securityEntityManagerFactory()
     {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
@@ -113,4 +114,13 @@ public class H2DataSourceConfig {
         return factory;
     }
 
+	@Bean //lazy initiailization , case user entity attribute address
+    public OpenEntityManagerInViewFilter h2OpenEntityManagerInViewFilter()
+    {
+        OpenEntityManagerInViewFilter osivFilter = new OpenEntityManagerInViewFilter();
+        osivFilter.setEntityManagerFactoryBeanName("h2EntityManagerFactory");
+        return osivFilter;
+    }
+
+    
 }

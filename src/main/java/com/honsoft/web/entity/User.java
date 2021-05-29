@@ -5,21 +5,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Data
 @Entity
+@Table(name="USERS")
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
 
     @Id
-    @Column(name = "seq")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int seq;
+    private int id;
 
     @Column(name = "username")
-    private String username;
+    private String userName;
 
     @Column(name = "password")
     private String password;
@@ -27,7 +30,10 @@ public class User {
     @Column(name = "enabled")
     private boolean enabled;
     
-    @Transient
+    //@Transient
     private String email;
+    
+    @OneToMany(mappedBy="user")
+    private Set<Address> addresses;
 
 }
